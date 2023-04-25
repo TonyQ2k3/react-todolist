@@ -29,6 +29,7 @@ export default function ToDoList() {
             >
                 <View style={styles.tasksWrapper}>
                     <Text style={styles.sectionTitle}>📝 To-do List</Text>
+                    {/*Display all tasks*/}
                     <View style={styles.items}>
                     {
                         doList.map((item, index) => {
