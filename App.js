@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useState } from 'react';
 import ToDoList from './components/ToDoList';
-//import Task from './Task';
 
 export default function Page() {
   return (
