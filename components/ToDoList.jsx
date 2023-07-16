@@ -34,6 +34,7 @@ export default function ToDoList() {
                         <View style={styles.addWrapper}>
                             <Text style={styles.addText}>+</Text>
                         </View>
+                        
                     </TouchableOpacity>
                 </View>
             </View>
