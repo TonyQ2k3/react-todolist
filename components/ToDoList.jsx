@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, Platform, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from "react-native";
 import React, { useState } from 'react';
 import Task from './Task';
 
@@ -23,42 +23,32 @@ export default function ToDoList() {
 
     return (
         <View style={styles.container}>
-            <ScrollView
-                contentContainerStyle={{flexGrow: 1}}
-                keyboardShouldPersistTaps='handled'
-            >
-                <View style={styles.tasksWrapper}>
-                    <Text style={styles.sectionTitle}>📝 To-do List</Text>
-                    {/*Display all tasks*/}
-                    <View style={styles.items}>
-                    {
-                        doList.map((item, index) => {
-                            return (
-                                <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
-                                    <Task text={item} /> 
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                    </View>
-                </View>
-            </ScrollView>
-
-            {/*Add a new task*/}
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.addTaskWrapper}
-                >
-                <TextInput 
+            <Text style={styles.sectionTitle}>📝 To-do List</Text>
+            <View style={styles.inputContainer}> 
+                <Text style={styles.inputHeader}>Write you tasks here: </Text>
+                <View style={styles.addTaskContainer}>
+                    <TextInput 
                     style={styles.input} 
-                    placeholder="Write your task"
-                    onChangeText={text => setTask(text)}></TextInput>
-                <TouchableOpacity onPress={handleAdd}>
-                    <View style={styles.addWrapper}>
-                        <Text style={styles.addText}>+</Text>
-                    </View>
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
+                    onChangeText={text => setTask(text)} />
+                    <TouchableOpacity onPress={handleAdd}>
+                        <View style={styles.addWrapper}>
+                            <Text style={styles.addText}>+</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <ScrollView style={styles.taskDisplay}>
+                {
+                    doList.length == 0 ? 
+                    <Image source={require('../assets/emptyList.png')} style={styles.emptyList} resizeMode="contain"/>
+                    :
+                    doList.map((item, index) => (
+                            <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
+                                <Task text={item} /> 
+                            </TouchableOpacity>
+                    ))
+                }
+            </ScrollView>
     </View>
   )
 }
@@ -67,48 +57,40 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#E8EAED',
-    },
-
-    tasksWrapper: {
         paddingTop: 40,
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
     },
-
     sectionTitle: {
-        fontSize: 30,
+        fontSize: 40,
         fontWeight: 'bold',
         textAlign: 'center',
     },
-
-    items: {
-        marginTop: 25,
+    inputContainer: {
+        marginVertical: 20,
     },
-
-    addTaskWrapper: {
-        position: 'absolute',
-        bottom: 25,
-        width: '100%',
+    inputHeader: {
+        marginLeft: 15,
+        fontSize: 16,
+    },
+    addTaskContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
+        justifyContent: 'space-between',
     },
-
     input: {
-        paddingVertical: 15,
+        marginTop: 7,
+        paddingVertical: 10,
         paddingHorizontal: 15,
         width: 246,
         height: 45,
         borderColor: '#C0C0C0',
         borderRadius: 60,
         backgroundColor: '#FFFFFF',
-        // Add shadow
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 1,  
         elevation: 5,
     },
-
     addWrapper: {
         width: 60,
         height: 60,
@@ -117,9 +99,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 60,
     },
-
     addText: {
         fontSize: 30,
         color: '#FFF',
+    },
+    taskDisplay: {
+        flex: 1,
+        padding: 10,
+    },
+    emptyList: {
+        width: 350,
+        position: 'relative',
+        top: -75,
     },
 });
