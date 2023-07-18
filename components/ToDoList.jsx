@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from "react-native";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ScrollView, Image, Platform } from "react-native";
 import React, { useState } from 'react';
 import Task from './Task';
 
@@ -22,35 +22,42 @@ export default function ToDoList() {
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.sectionTitle}>📝 To-do List</Text>
-            <View style={styles.inputContainer}> 
-                <Text style={styles.inputHeader}>Write you tasks here: </Text>
-                <View style={styles.addTaskContainer}>
-                    <TextInput 
-                    style={styles.input} 
-                    onChangeText={text => setTask(text)} />
-                    <TouchableOpacity onPress={handleAdd}>
-                        <View style={styles.addWrapper}>
-                            <Text style={styles.addText}>+</Text>
-                        </View>
-                        
-                    </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => {
+            Keyboard.dismiss();
+        }}>
+            <View style={styles.container}>
+                <Text style={styles.sectionTitle}>📝 To-do List</Text>
+                <View style={styles.inputContainer}> 
+                    <Text style={styles.inputHeader}>Write you tasks here: </Text>
+                    <View style={styles.addTaskContainer}>
+                        <TextInput 
+                        style={styles.input} 
+                        onChangeText={text => setTask(text)} />
+                        <TouchableOpacity onPress={handleAdd}>
+                            <View style={styles.addWrapper}>
+                                <Text style={styles.addText}>+</Text>
+                            </View>
+                            
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <ScrollView style={styles.taskDisplay}>
+
                 {
                     doList.length == 0 ? 
-                    <Image source={require('../assets/emptyList.png')} style={styles.emptyList} resizeMode="contain"/>
+                    (<View>
+                        <Image source={require('../assets/emptyList.png')} style={styles.emptyList} />
+                    </View>)
                     :
-                    doList.map((item, index) => (
-                            <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
-                                <Task text={item} /> 
-                            </TouchableOpacity>
-                    ))
+                    <ScrollView style={styles.taskDisplay}>
+                        {doList.map((item, index) => (
+                                <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
+                                    <Task text={item} /> 
+                                </TouchableOpacity>
+                        ))}
+                    </ScrollView>
                 }
-            </ScrollView>
-    </View>
+            </View>
+        </TouchableWithoutFeedback>
   )
 }
 
@@ -109,8 +116,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     emptyList: {
-        width: 350,
-        position: 'relative',
-        top: -75,
+        width: Platform.OS === 'ios' ? 330 : 350,
+        height: 350,
     },
 });
