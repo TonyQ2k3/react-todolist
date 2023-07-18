@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ScrollView, Image, Platform } from "react-native";
 import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ScrollView, Image, Platform } from "react-native";
+
 import Task from './Task';
 
 export default function ToDoList() {
@@ -50,9 +51,9 @@ export default function ToDoList() {
                     :
                     <ScrollView style={styles.taskDisplay}>
                         {doList.map((item, index) => (
-                                <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
-                                    <Task text={item} /> 
-                                </TouchableOpacity>
+                            <TouchableOpacity key={index}>
+                                <Task text={item} handlePress={() => completeTask(index)} /> 
+                            </TouchableOpacity>
                         ))}
                     </ScrollView>
                 }
@@ -116,7 +117,9 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     emptyList: {
-        width: Platform.OS === 'ios' ? 330 : 350,
-        height: 350,
+        width: Platform.OS === 'ios' ? 330 : 360,
+        height: Platform.OS === 'ios' ? 330 : 360,
+        position: 'relative',
+        top: 50,
     },
 });

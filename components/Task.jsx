@@ -1,10 +1,14 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons'
 
 const Task = (props) => {
     return (
         <View style={styles.item}>
                 <Text style={styles.itemText}>{props.text}</Text>
+                <TouchableOpacity onPress={props.handlePress}>
+                    <MaterialIcons name="delete" size={20}/>
+                </TouchableOpacity>
         </View>
     );
 }
@@ -19,8 +23,10 @@ const styles = StyleSheet.create({
         width: '100%',
         minHeight: 50,
         backgroundColor: '#fff',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 12,
     },
     itemText: {
         fontSize: 18,
